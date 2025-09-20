@@ -23,7 +23,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            color: var(--text-color   );
+            color: var(--text-color );
             line-height: 1.7;
         }
 
@@ -83,9 +83,8 @@
             color: white;
         }
 
-        /* --- Header & Hero Section (التعديل هنا) --- */
+        /* --- Header & Hero Section (Your Updates) --- */
         .header {
-            /* 1. حذفنا الطبقة الداكنة من هنا */
             background: url('images/4.jpg') no-repeat center center/cover;
             color: white;
             min-height: 80vh;
@@ -99,7 +98,6 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 40px;
-            /* 2. جعلنا الشريط شفافاً تماماً */
             background-color: transparent; 
         }
 
@@ -116,7 +114,6 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
-            /* 3. أضفنا ظلاً للنص لجعله مقروءاً على الصورة الفاتحة */
             text-shadow: 0 2px 8px rgba(0,0,0,0.7);
         }
 
@@ -141,35 +138,45 @@
             background-color: #3a7a78;
         }
 
-        /* --- Currency Section --- */
-        .currency-section {
+        /* --- Market Prices Section (NEW STRUCTURE) --- */
+        .market-prices-section {
             background-color: var(--light-grey);
         }
-        .currency-section h2 {
+        .market-group {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+            margin-bottom: 40px;
+        }
+        .market-group:last-child {
+            margin-bottom: 0;
+        }
+        .market-group h2 {
             text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
         }
         .currency-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 20px;
-            margin-top: 40px;
         }
         .currency-card {
-            background: white;
-            padding: 20px;
+            background: var(--light-grey);
+            padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             text-align: center;
         }
         .currency-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
         }
         .currency-card .price {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--secondary-color);
-            min-height: 2rem;
+            min-height: 1.8rem;
         }
         
         /* --- Investments & About Section --- */
@@ -374,27 +381,49 @@
         </nav>
         <div class="hero-content">
             <h1>Invest with Confidence</h1>
-            <p style="color: black;">Expert investment banking solutions for growth and success.</p>
+            <p style="color: white;">Expert investment banking solutions for growth and success.</p>
             <a href="#about" class="btn btn-hero">ABOUT SETIA</a>
         </div>
     </header>
 
     <main>
-        <!-- Currency Prices Section -->
-        <section id="prices" class="container currency-section">
-            <h2>Live Market Prices (vs AED)</h2>
-            <div class="currency-grid">
-                <div class="currency-card" data-currency="USD"><h3>USD</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="EUR"><h3>EUR</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="GBP"><h3>GBP</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="SAR"><h3>SAR</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="JPY"><h3>JPY</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="CAD"><h3>CAD</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="AUD"><h3>AUD</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="CHF"><h3>CHF</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="EGP"><h3>EGP</h3><p class="price">...</p></div>
-                <div class="currency-card" data-currency="INR"><h3>INR</h3><p class="price">...</p></div>
+        <!-- Market Prices Section (NEW STRUCTURE) -->
+        <section id="prices" class="container market-prices-section">
+            
+            <!-- Fiat Currencies Group -->
+            <div class="market-group">
+                <h2>Global Currency Prices (vs AED)</h2>
+                <div class="currency-grid" id="fiat-grid">
+                    <div class="currency-card" data-currency="USD"><h3>USD</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="EUR"><h3>EUR</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="GBP"><h3>GBP</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="SAR"><h3>SAR</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="JPY"><h3>JPY</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="CAD"><h3>CAD</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="AUD"><h3>AUD</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="CHF"><h3>CHF</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="EGP"><h3>EGP</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-currency="INR"><h3>INR</h3><p class="price">...</p></div>
+                </div>
             </div>
+
+            <!-- Crypto Currencies Group -->
+            <div class="market-group">
+                <h2>Digital Currency Prices (vs AED)</h2>
+                <div class="currency-grid" id="crypto-grid">
+                    <div class="currency-card" data-crypto-id="bitcoin"><h3>BTC</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="ethereum"><h3>ETH</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="solana"><h3>SOL</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="binancecoin"><h3>BNB</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="ripple"><h3>XRP</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="cardano"><h3>ADA</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="dogecoin"><h3>DOGE</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="shiba-inu"><h3>SHIB</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="tether"><h3>USDT</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="usd-coin"><h3>USDC</h3><p class="price">...</p></div>
+                </div>
+            </div>
+
         </section>
 
         <!-- Setia Investments Section -->
@@ -495,10 +524,10 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
         </div>
     </div>
 
-    <!-- Javascript for Accordion, Modal & Currency API -->
+    <!-- Javascript -->
     <script>
         // --- Accordion Script ---
-        const accordion = document.getElementById('hours-accordion'  );
+        const accordion = document.getElementById('hours-accordion' );
         if (accordion) {
             const fullWeek = accordion.querySelector('.full-week');
             accordion.addEventListener('click', () => {
@@ -521,67 +550,87 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
             function openModal() { modalOverlay.style.display = 'flex'; }
             function closeModal() { modalOverlay.style.display = 'none'; }
 
-            openModalBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                openModal();
-            });
-
+            openModalBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
             closeModalBtn.addEventListener('click', closeModal);
-            cancelModalBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                closeModal();
-            });
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) { closeModal(); }
-            });
+            cancelModalBtn.addEventListener('click', (e) => { e.preventDefault(); closeModal(); });
+            modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) { closeModal(); } });
         }
 
-        // --- Currency Exchange Script ---
+        // --- Market Prices Script ---
         document.addEventListener('DOMContentLoaded', () => {
-            const apiKey = '95a0d217f32250a794d676ca'; // API Key is now integrated
-            const baseCurrency = 'AED';
-            const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${baseCurrency}`;
+            const fiatApiKey = '95a0d217f32250a794d676ca';
+            let usdToAedRate = 3.67; // Default/fallback rate
 
-            // Function to fetch and update currency rates
-            function fetchRates(  ) {
-                console.log("Fetching latest currency rates...");
+            // 1. Fetch Fiat Currency Rates (and get the USD-AED rate)
+            function fetchFiatRates() {
+                const apiUrl = `https://v6.exchangerate-api.com/v6/${fiatApiKey}/latest/USD`;
+                console.log("Fetching fiat rates..." );
                 fetch(apiUrl)
-                    .then(response => {
-                        if (!response.ok) { throw new Error('Network response was not ok.'); }
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(data => {
                         if (data.result === 'success') {
-                            console.log("Data fetched successfully!");
+                            console.log("Fiat rates fetched successfully!");
                             const rates = data.conversion_rates;
-                            const currencyCards = document.querySelectorAll('.currency-card');
-                            
-                            currencyCards.forEach(card => {
+                            usdToAedRate = rates.AED; // Store the live USD to AED rate
+
+                            const fiatCards = document.querySelectorAll('#fiat-grid .currency-card');
+                            fiatCards.forEach(card => {
                                 const currencyCode = card.getAttribute('data-currency');
                                 const priceElement = card.querySelector('.price');
-                                
                                 if (rates[currencyCode]) {
-                                    const rate = 1 / rates[currencyCode];
+                                    const rate = rates.AED / rates[currencyCode];
                                     priceElement.textContent = rate.toFixed(4);
                                 } else {
                                     priceElement.textContent = 'N/A';
                                 }
                             });
-                        } else {
-                            throw new Error('API error: ' + data['error-type']);
-                        }
+                            
+                            // After getting fiat rates, fetch crypto rates
+                            fetchCryptoRates();
+
+                        } else { console.error('Fiat API error: ' + data['error-type']); }
                     })
-                    .catch(error => {
-                        console.error('Error fetching currency data:', error);
-                        document.querySelectorAll('.currency-card .price').forEach(p => p.textContent = 'Error');
-                    });
+                    .catch(error => console.error('Error fetching fiat data:', error));
             }
 
-            // Fetch rates on initial page load
-            fetchRates();
+            // 2. Fetch Crypto Currency Rates
+            function fetchCryptoRates() {
+                const cryptoCards = document.querySelectorAll('#crypto-grid .currency-card');
+                const cryptoIds = Array.from(cryptoCards).map(card => card.getAttribute('data-crypto-id')).join(',');
+                const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoIds}&vs_currencies=usd`;
+                
+                console.log("Fetching crypto rates..." );
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Crypto rates fetched successfully!");
+                        cryptoCards.forEach(card => {
+                            const cryptoId = card.getAttribute('data-crypto-id');
+                            const priceElement = card.querySelector('.price');
+                            
+                            if (data[cryptoId] && data[cryptoId].usd) {
+                                const priceInUsd = data[cryptoId].usd;
+                                const priceInAed = priceInUsd * usdToAedRate;
+                                
+                                // Formatting for very small numbers like SHIB
+                                if (priceInAed < 0.01) {
+                                    priceElement.textContent = priceInAed.toFixed(8);
+                                } else {
+                                    priceElement.textContent = priceInAed.toFixed(4);
+                                }
+                            } else {
+                                priceElement.textContent = 'N/A';
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error fetching crypto data:', error));
+            }
 
-            // Set an interval to fetch rates every 60 seconds (60000 milliseconds)
-            setInterval(fetchRates, 60000);
+            // Initial fetch
+            fetchFiatRates();
+
+            // Set an interval to fetch all rates every hour
+            setInterval(fetchFiatRates, 3600000);
         });
     </script>
 
