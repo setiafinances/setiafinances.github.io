@@ -23,7 +23,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            color: var(--text-color  );
+            color: var(--text-color   );
             line-height: 1.7;
         }
 
@@ -159,8 +159,16 @@
         }
         .currency-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
+        }
+        /* MODIFICATION: Style for centering the metals grid */
+        #metals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* We have 3 items */
+            gap: 20px;
+            max-width: 600px; /* Adjust this width as needed */
+            margin: 0 auto; /* This centers the grid horizontally */
         }
         .currency-card {
             background: var(--light-grey);
@@ -369,6 +377,10 @@
             .currency-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            /* MODIFICATION: Responsive centering for metals grid */
+            #metals-grid {
+                grid-template-columns: 1fr; /* Stack them on small screens */
+            }
         }
     </style>
 </head>
@@ -427,10 +439,11 @@
             <!-- Precious Metals Group (UPDATED) -->
             <div class="market-group">
                 <h2>Precious Metals Prices (vs AED)</h2>
-                <div class="currency-grid" id="metals-grid">
-                    <div class="currency-card" data-crypto-id="gold"><h3>Gold/Oz</h3><p class="price">...</p></div>
-                    <div class="currency-card" data-crypto-id="silver"><h3>Silver/Oz</h3><p class="price">...</p></div>
-                    <div class="currency-card" data-crypto-id="platinum"><h3>Platinum/Oz</h3><p class="price">...</p></div>
+                <!-- MODIFICATION: Changed grid-template-columns to auto-fit for better responsiveness -->
+                <div class="currency-grid" id="metals-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                    <div class="currency-card" data-crypto-id="gold"><h3>Gold/Gram</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="silver"><h3>Silver/Gram</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="platinum"><h3>Platinum/Gram</h3><p class="price">...</p></div>
                 </div>
             </div>
 
@@ -570,11 +583,12 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
         document.addEventListener('DOMContentLoaded', () => {
             const fiatApiKey = '95a0d217f32250a794d676ca';
             let usdToAedRate = 3.67; // Default/fallback rate
+            const GRAMS_IN_OUNCE = 31.1035; // MODIFICATION: Added conversion factor
 
             // 1. Fetch Fiat Currency Rates (and get the USD-AED rate)
             function fetchAllRates() {
                 const fiatApiUrl = `https://v6.exchangerate-api.com/v6/${fiatApiKey}/latest/USD`;
-                console.log("Fetching all market rates..."  );
+                console.log("Fetching all market rates..."   );
                 fetch(fiatApiUrl)
                     .then(response => response.json())
                     .then(data => {
@@ -606,35 +620,65 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
 
             // 2. Fetch Crypto and Metals Rates from CoinGecko
             function fetchCryptoAndMetalsRates() {
-                const assetCards = document.querySelectorAll('#crypto-grid .currency-card, #metals-grid .currency-card');
-                const assetIds = Array.from(assetCards).map(card => card.getAttribute('data-crypto-id')).join(',');
+                const cryptoCards = document.querySelectorAll('#crypto-grid .currency-card');
+                const metalsCards = document.querySelectorAll('#metals-grid .currency-card');
+                
+                const assetIds = [
+                    ...Array.from(cryptoCards), 
+                    ...Array.from(metalsCards)
+                ].map(card => card.getAttribute('data-crypto-id')).join(',');
+
                 const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIds}&vs_currencies=usd`;
                 
-                console.log("Fetching crypto and metals rates..."  );
+                console.log("Fetching crypto and metals rates..."   );
                 fetch(apiUrl)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Crypto and metals rates fetched successfully!");
-                        assetCards.forEach(card => {
-                            const assetId = card.getAttribute('data-crypto-id');
-                            const priceElement = card.querySelector('.price');
-                            
-                            if (data[assetId] && data[assetId].usd) {
-                                const priceInUsd = data[assetId].usd;
-                                const priceInAed = priceInUsd * usdToAedRate;
-                                
-                                // Use more precision for very small values like Shiba Inu
-                                if (priceInAed < 0.01) {
-                                    priceElement.textContent = priceInAed.toFixed(8);
-                                } else {
-                                    priceElement.textContent = priceInAed.toFixed(2);
-                                }
-                            } else {
-                                priceElement.textContent = 'N/A';
-                            }
+
+                        // Update Crypto Cards
+                        cryptoCards.forEach(card => {
+                            updateCardPrice(card, data, usdToAedRate, false);
+                        });
+
+                        // Update Metals Cards (with conversion to grams)
+                        metalsCards.forEach(card => {
+                            updateCardPrice(card, data, usdToAedRate, true);
                         });
                     })
                     .catch(error => console.error('Error fetching crypto/metals data:', error));
+            }
+
+            /**
+             * MODIFICATION: Helper function to update card prices, now handles metals conversion.
+             * @param {Element} card - The currency card element.
+             * @param {object} data - The API response data.
+             * @param {number} aedRate - The current USD to AED conversion rate.
+             * @param {boolean} isMetal - Flag to indicate if conversion to grams is needed.
+             */
+            function updateCardPrice(card, data, aedRate, isMetal) {
+                const assetId = card.getAttribute('data-crypto-id');
+                const priceElement = card.querySelector('.price');
+                
+                if (data[assetId] && data[assetId].usd) {
+                    let priceInUsd = data[assetId].usd;
+
+                    // If it's a metal, convert from price-per-ounce to price-per-gram
+                    if (isMetal) {
+                        priceInUsd = priceInUsd / GRAMS_IN_OUNCE;
+                    }
+
+                    const priceInAed = priceInUsd * aedRate;
+                    
+                    // Adjust decimal places for display
+                    if (priceInAed < 0.01) {
+                        priceElement.textContent = priceInAed.toFixed(8);
+                    } else {
+                        priceElement.textContent = priceInAed.toFixed(2);
+                    }
+                } else {
+                    priceElement.textContent = 'N/A';
+                }
             }
 
             // Initial fetch
