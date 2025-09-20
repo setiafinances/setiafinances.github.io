@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmed</title>
+    <title>Setia Finances - Your Investment</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            color: var(--text-color  );
+            color: var(--text-color );
             line-height: 1.7;
         }
 
@@ -83,36 +83,43 @@
             color: white;
         }
 
-        /* --- Header & Hero Section --- */
+        /* --- Header & Navbar --- */
         .header {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/4.jpg') no-repeat center center/cover;
-            color: white;
-            min-height: 80vh;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--secondary-color); /* Solid background color */
+            padding: 10px 40px;
+            position: sticky; /* Makes the header stick to the top on scroll */
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
         }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
+            max-width: 1200px; /* Consistent width */
+            margin: 0 auto;
         }
 
         .logo {
             width: 150px;
         }
 
-        .hero-content {
-            flex-grow: 1;
+        /* --- Hero Section --- */
+        .hero {
+            background: url('images/4.jpg') no-repeat center center/cover; /* Image without dark overlay */
+            color: white;
+            min-height: 75vh; /* Adjusted height */
+            position: relative;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
+            align-items: center; /* Vertically center content */
+        }
+
+        .hero-content {
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6); /* Add text shadow for readability */
         }
 
         .hero-content h1 {
@@ -357,22 +364,30 @@
             .currency-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .header {
+                padding: 10px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Hero Section -->
+    <!-- Header Section -->
     <header class="header">
         <nav class="navbar">
             <img src="images/2.png" alt="Setia Logo" class="logo">
+            <!-- You can add nav links here later if you want -->
         </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="hero-content">
             <h1>Invest with Confidence</h1>
             <p>Expert investment banking solutions for growth and success.</p>
             <a href="#about" class="btn btn-hero">ABOUT SETIA</a>
         </div>
-    </header>
+    </section>
 
     <main>
         <!-- Currency Prices Section -->
@@ -493,7 +508,7 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
     <!-- Javascript for Accordion, Modal & Currency API -->
     <script>
         // --- Accordion Script ---
-        const accordion = document.getElementById('hours-accordion' );
+        const accordion = document.getElementById('hours-accordion'  );
         if (accordion) {
             const fullWeek = accordion.querySelector('.full-week');
             accordion.addEventListener('click', () => {
@@ -538,7 +553,7 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
             const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${baseCurrency}`;
 
             // Function to fetch and update currency rates
-            function fetchRates( ) {
+            function fetchRates(  ) {
                 console.log("Fetching latest currency rates...");
                 fetch(apiUrl)
                     .then(response => {
