@@ -23,7 +23,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            color: var(--text-color    );
+            color: var(--text-color  );
             line-height: 1.7;
         }
 
@@ -161,12 +161,6 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 20px;
-        }
-        /* ** STYLE FOR CENTERING METALS ** */
-        .currency-grid.centered {
-            grid-template-columns: repeat(3, 1fr);
-            max-width: 700px;
-            margin: 0 auto;
         }
         .currency-card {
             background: var(--light-grey);
@@ -352,9 +346,6 @@
             .currency-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-            .currency-grid.centered {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
         @media (max-width: 768px) {
             .section-grid {
@@ -378,9 +369,6 @@
             .currency-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .currency-grid.centered {
-                grid-template-columns: 1fr; /* On very small screens, stack them */
-            }
         }
     </style>
 </head>
@@ -399,7 +387,7 @@
     </header>
 
     <main>
-        <!-- Market Prices Section -->
+        <!-- Market Prices Section (FINAL STRUCTURE) -->
         <section id="prices" class="container market-prices-section">
             
             <!-- Fiat Currencies Group -->
@@ -436,13 +424,13 @@
                 </div>
             </div>
 
-            <!-- Precious Metals Group -->
+            <!-- Precious Metals Group (UPDATED) -->
             <div class="market-group">
                 <h2>Precious Metals Prices (vs AED)</h2>
-                <div class="currency-grid centered" id="metals-grid">
-                    <div class="currency-card" data-metal-id="gold"><h3>Gold/Oz</h3><p class="price">...</p></div>
-                    <div class="currency-card" data-metal-id="silver"><h3>Silver/Oz</h3><p class="price">...</p></div>
-                    <div class="currency-card" data-metal-id="platinum"><h3>Platinum/Oz</h3><p class="price">...</p></div>
+                <div class="currency-grid" id="metals-grid">
+                    <div class="currency-card" data-crypto-id="gold"><h3>Gold/Oz</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="silver"><h3>Silver/Oz</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-crypto-id="platinum"><h3>Platinum/Oz</h3><p class="price">...</p></div>
                 </div>
             </div>
 
@@ -491,3 +479,171 @@ Clover Bay Tower, 33, Marasi Drive, Business Bay, Dubai, 00000</p>
                     
                     <div class="opening-hours" id="hours-accordion">
                         <div class="today">
+                            <span>Open today 09:00 am - 05:00 pm</span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="full-week">
+                            <p>Mon: 09:00 am - 05:00 pm</p>
+                            <p>Tue: 09:00 am - 05:00 pm</p>
+                            <p>Wed: 09:00 am - 05:00 pm</p>
+                            <p>Thu: 09:00 am - 05:00 pm</p>
+                            <p>Fri: 09:00 am - 05:00 pm</p>
+                            <p>Sat: 09:00 am - 05:00 pm</p>
+                            <p>Sun: Closed</p>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn btn-primary" id="open-contact-modal">CONTACT US</a>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d638.239522787366!2d55.27000180441502!3d25.18878642320684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f693afb4babe9%3A0xdda585df6ed9b8ae!2sClover%20Bay%20Tower!5e0!3m2!1sar!2sae!4v1758324259736!5m2!1sar!2sae" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <h2>Subscribe</h2>
+        <p>Sign up to hear from us.</p>
+        <form class="subscribe-form">
+            <input type="email" placeholder="Email" required>
+            <button type="submit" class="btn btn-primary">SIGN UP</button>
+        </form>
+        <div class="footer-bottom">
+            <p>SETIA BANKING CONSULTANCY LLC  
+CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
+            <p>COPYRIGHT © 2025 AHMED - ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- Contact Form Modal -->
+    <div class="modal-overlay" id="contact-modal-overlay">
+        <div class="modal-container">
+            <span class="modal-close-btn" id="modal-close-btn">&times;</span>
+            <form class="contact-form">
+                <h2>Contact Us</h2>
+                <div class="form-group"><input type="text" name="name" placeholder="Name" required></div>
+                <div class="form-group"><input type="email" name="email" placeholder="Email*" required></div>
+                <div class="form-group"><textarea name="message" placeholder="Message" required></textarea></div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">SEND</button>
+                    <a href="#" class="cancel-btn" id="modal-cancel-btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Javascript (UPDATED ) -->
+    <script>
+        // --- Accordion Script ---
+        const accordion = document.getElementById('hours-accordion' );
+        if (accordion) {
+            const fullWeek = accordion.querySelector('.full-week');
+            accordion.addEventListener('click', () => {
+                accordion.classList.toggle('active');
+                if (fullWeek.style.maxHeight) {
+                    fullWeek.style.maxHeight = null;
+                } else {
+                    fullWeek.style.maxHeight = fullWeek.scrollHeight + "px";
+                }
+            });
+        }
+
+        // --- Modal Script ---
+        const openModalBtn = document.getElementById('open-contact-modal');
+        const modalOverlay = document.getElementById('contact-modal-overlay');
+        const closeModalBtn = document.getElementById('modal-close-btn');
+        const cancelModalBtn = document.getElementById('modal-cancel-btn');
+
+        if (openModalBtn && modalOverlay && closeModalBtn && cancelModalBtn) {
+            function openModal() { modalOverlay.style.display = 'flex'; }
+            function closeModal() { modalOverlay.style.display = 'none'; }
+
+            openModalBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelModalBtn.addEventListener('click', (e) => { e.preventDefault(); closeModal(); });
+            modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) { closeModal(); } });
+        }
+
+        // --- Market Prices Script (UPDATED) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const fiatApiKey = '95a0d217f32250a794d676ca';
+            let usdToAedRate = 3.67; // Default/fallback rate
+
+            // 1. Fetch Fiat Currency Rates (and get the USD-AED rate)
+            function fetchAllRates() {
+                const fiatApiUrl = `https://v6.exchangerate-api.com/v6/${fiatApiKey}/latest/USD`;
+                console.log("Fetching all market rates..."  );
+                fetch(fiatApiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === 'success') {
+                            console.log("Fiat rates fetched successfully!");
+                            const rates = data.conversion_rates;
+                            usdToAedRate = rates.AED; // Store the live USD to AED rate
+
+                            // Update Fiat Cards
+                            const fiatCards = document.querySelectorAll('#fiat-grid .currency-card');
+                            fiatCards.forEach(card => {
+                                const currencyCode = card.getAttribute('data-currency');
+                                const priceElement = card.querySelector('.price');
+                                if (rates[currencyCode]) {
+                                    const rate = rates.AED / rates[currencyCode];
+                                    priceElement.textContent = rate.toFixed(4);
+                                } else {
+                                    priceElement.textContent = 'N/A';
+                                }
+                            });
+                            
+                            // After getting fiat rates, fetch other assets
+                            fetchCryptoAndMetalsRates();
+
+                        } else { console.error('Fiat API error: ' + data['error-type']); }
+                    })
+                    .catch(error => console.error('Error fetching fiat data:', error));
+            }
+
+            // 2. Fetch Crypto and Metals Rates from CoinGecko
+            function fetchCryptoAndMetalsRates() {
+                const assetCards = document.querySelectorAll('#crypto-grid .currency-card, #metals-grid .currency-card');
+                const assetIds = Array.from(assetCards).map(card => card.getAttribute('data-crypto-id')).join(',');
+                const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIds}&vs_currencies=usd`;
+                
+                console.log("Fetching crypto and metals rates..."  );
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Crypto and metals rates fetched successfully!");
+                        assetCards.forEach(card => {
+                            const assetId = card.getAttribute('data-crypto-id');
+                            const priceElement = card.querySelector('.price');
+                            
+                            if (data[assetId] && data[assetId].usd) {
+                                const priceInUsd = data[assetId].usd;
+                                const priceInAed = priceInUsd * usdToAedRate;
+                                
+                                // Use more precision for very small values like Shiba Inu
+                                if (priceInAed < 0.01) {
+                                    priceElement.textContent = priceInAed.toFixed(8);
+                                } else {
+                                    priceElement.textContent = priceInAed.toFixed(2);
+                                }
+                            } else {
+                                priceElement.textContent = 'N/A';
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error fetching crypto/metals data:', error));
+            }
+
+            // Initial fetch
+            fetchAllRates();
+
+            // Set an interval to fetch all rates every hour
+            setInterval(fetchAllRates, 3600000);
+        });
+    </script>
+
+</body>
+</html>
