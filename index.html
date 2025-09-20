@@ -138,7 +138,7 @@
             background-color: #3a7a78;
         }
 
-        /* --- Market Prices Section (NEW STRUCTURE) --- */
+        /* --- Market Prices Section (FINAL STRUCTURE) --- */
         .market-prices-section {
             background-color: var(--light-grey);
         }
@@ -387,7 +387,7 @@
     </header>
 
     <main>
-        <!-- Market Prices Section (NEW STRUCTURE) -->
+        <!-- Market Prices Section (FINAL STRUCTURE) -->
         <section id="prices" class="container market-prices-section">
             
             <!-- Fiat Currencies Group -->
@@ -421,6 +421,16 @@
                     <div class="currency-card" data-crypto-id="shiba-inu"><h3>SHIB</h3><p class="price">...</p></div>
                     <div class="currency-card" data-crypto-id="tether"><h3>USDT</h3><p class="price">...</p></div>
                     <div class="currency-card" data-crypto-id="usd-coin"><h3>USDC</h3><p class="price">...</p></div>
+                </div>
+            </div>
+
+            <!-- Precious Metals Group -->
+            <div class="market-group">
+                <h2>Precious Metals Prices (vs AED)</h2>
+                <div class="currency-grid" id="metals-grid">
+                    <div class="currency-card" data-metal="XAU"><h3>Gold/Oz</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-metal="XAG"><h3>Silver/Oz</h3><p class="price">...</p></div>
+                    <div class="currency-card" data-metal="XPT"><h3>Platinum/Oz</h3><p class="price">...</p></div>
                 </div>
             </div>
 
@@ -559,13 +569,14 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
         // --- Market Prices Script ---
         document.addEventListener('DOMContentLoaded', () => {
             const fiatApiKey = '95a0d217f32250a794d676ca';
+            const metalsApiKey = 'JQTGLJM9RSV72CQ98AXT224Q98AXT'; // Your new metals API key
             let usdToAedRate = 3.67; // Default/fallback rate
 
             // 1. Fetch Fiat Currency Rates (and get the USD-AED rate)
-            function fetchFiatRates() {
-                const apiUrl = `https://v6.exchangerate-api.com/v6/${fiatApiKey}/latest/USD`;
-                console.log("Fetching fiat rates..." );
-                fetch(apiUrl)
+            function fetchAllRates() {
+                const fiatApiUrl = `https://v6.exchangerate-api.com/v6/${fiatApiKey}/latest/USD`;
+                console.log("Fetching all market rates..." );
+                fetch(fiatApiUrl)
                     .then(response => response.json())
                     .then(data => {
                         if (data.result === 'success') {
@@ -573,6 +584,7 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
                             const rates = data.conversion_rates;
                             usdToAedRate = rates.AED; // Store the live USD to AED rate
 
+                            // Update Fiat Cards
                             const fiatCards = document.querySelectorAll('#fiat-grid .currency-card');
                             fiatCards.forEach(card => {
                                 const currencyCode = card.getAttribute('data-currency');
@@ -585,8 +597,9 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
                                 }
                             });
                             
-                            // After getting fiat rates, fetch crypto rates
+                            // After getting fiat rates, fetch other assets
                             fetchCryptoRates();
+                            fetchMetalsRates();
 
                         } else { console.error('Fiat API error: ' + data['error-type']); }
                     })
@@ -612,11 +625,10 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
                                 const priceInUsd = data[cryptoId].usd;
                                 const priceInAed = priceInUsd * usdToAedRate;
                                 
-                                // Formatting for very small numbers like SHIB
                                 if (priceInAed < 0.01) {
                                     priceElement.textContent = priceInAed.toFixed(8);
                                 } else {
-                                    priceElement.textContent = priceInAed.toFixed(4);
+                                    priceElement.textContent = priceInAed.toFixed(2);
                                 }
                             } else {
                                 priceElement.textContent = 'N/A';
@@ -626,11 +638,41 @@ CLOVER BAY TOWER 33, MARASI DRIVE, BUSINESS BAY, DUBAI</p>
                     .catch(error => console.error('Error fetching crypto data:', error));
             }
 
+            // 3. Fetch Precious Metals Rates
+            function fetchMetalsRates() {
+                const metalsApiUrl = `https://metals.dev/api/latest?api_key=${metalsApiKey}&base=USD&symbols=XAU,XAG,XPT`;
+                console.log("Fetching metals rates..." );
+                fetch(metalsApiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("Metals rates fetched successfully!");
+                            const metalsCards = document.querySelectorAll('#metals-grid .currency-card');
+                            metalsCards.forEach(card => {
+                                const metalSymbol = card.getAttribute('data-metal');
+                                const priceElement = card.querySelector('.price');
+
+                                if (data.rates[metalSymbol]) {
+                                    // The API gives the price of 1 USD in terms of the metal. We need the inverse.
+                                    const priceInUsd = 1 / data.rates[metalSymbol];
+                                    const priceInAed = priceInUsd * usdToAedRate;
+                                    priceElement.textContent = priceInAed.toFixed(2);
+                                } else {
+                                    priceElement.textContent = 'N/A';
+                                }
+                            });
+                        } else {
+                            console.error('Metals API error:', data.error.info);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching metals data:', error));
+            }
+
             // Initial fetch
-            fetchFiatRates();
+            fetchAllRates();
 
             // Set an interval to fetch all rates every hour
-            setInterval(fetchFiatRates, 3600000);
+            setInterval(fetchAllRates, 3600000);
         });
     </script>
 
