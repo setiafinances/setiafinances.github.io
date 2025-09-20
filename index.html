@@ -23,7 +23,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            color: var(--text-color );
+            color: var(--text-color   );
             line-height: 1.7;
         }
 
@@ -83,43 +83,41 @@
             color: white;
         }
 
-        /* --- Header & Navbar --- */
+        /* --- Header & Hero Section (التعديل هنا) --- */
         .header {
-            background-color: var(--secondary-color); /* Solid background color */
-            padding: 10px 40px;
-            position: sticky; /* Makes the header stick to the top on scroll */
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
+            /* 1. حذفنا الطبقة الداكنة من هنا */
+            background: url('images/4.jpg') no-repeat center center/cover;
+            color: white;
+            min-height: 80vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px; /* Consistent width */
-            margin: 0 auto;
+            padding: 20px 40px;
+            /* 2. جعلنا الشريط شفافاً تماماً */
+            background-color: transparent; 
         }
 
         .logo {
             width: 150px;
         }
 
-        /* --- Hero Section --- */
-        .hero {
-            background: url('images/4.jpg') no-repeat center center/cover; /* Image without dark overlay */
-            color: white;
-            min-height: 75vh; /* Adjusted height */
-            position: relative;
-            display: flex;
-            align-items: center; /* Vertically center content */
-        }
-
         .hero-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.6); /* Add text shadow for readability */
+            /* 3. أضفنا ظلاً للنص لجعله مقروءاً على الصورة الفاتحة */
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
         }
 
         .hero-content h1 {
@@ -364,30 +362,22 @@
             .currency-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .header {
-                padding: 10px 20px;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- Header & Hero Section -->
     <header class="header">
         <nav class="navbar">
             <img src="images/2.png" alt="Setia Logo" class="logo">
-            <!-- You can add nav links here later if you want -->
         </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
         <div class="hero-content">
             <h1>Invest with Confidence</h1>
             <p>Expert investment banking solutions for growth and success.</p>
             <a href="#about" class="btn btn-hero">ABOUT SETIA</a>
         </div>
-    </section>
+    </header>
 
     <main>
         <!-- Currency Prices Section -->
